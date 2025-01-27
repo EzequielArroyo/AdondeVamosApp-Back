@@ -1,9 +1,10 @@
 package com.adondevamos.adondevamos.Services;
 
-import com.adondevamos.adondevamos.Dtos.User.CreateUserDTO;
 import com.adondevamos.adondevamos.Dtos.User.UserDTO;
 import com.adondevamos.adondevamos.Entities.User;
+import com.adondevamos.adondevamos.Entities.UserRequest;
 import com.adondevamos.adondevamos.Repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,44 +16,31 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //GET ALL USERS
-    public List<UserDTO> getAllUsers(){
-        return  userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
-    }
-
     //GET USER BY ID
-    public User getUserById(Long id){
-        return userRepository.findById(id)
+    public UserDTO getUserById(Long id){
+        User user = userRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("User not found"));
-    }
+            return UserDTO.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .firstname(user.getFirstname())
+                    .lastname(user.getLastname())
+                    .email(user.getEmail())
+                    .build();
 
-    //CREATE USER
-    public CreateUserDTO createUser(CreateUserDTO newUser) {
-        User user = new User();
-        user.setUserName(newUser.getUserName());
-        user.setLastName(newUser.getLastName());
-        user.setEmail(newUser.getEmail());
-        user.setPassword(newUser.getPassword());
-
-        // Guardar el usuario en la base de datos
-        User savedUser = userRepository.save(user);
-        return newUser;
     }
 
     //EDIT USER
-    public User updateUser(Long id, User updatePost){
+    public String updateUser(Long id, UserRequest userRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("User not found"));
-        if(updatePost.getUserName() != null){
-            user.setUserName(updatePost.getUserName());
-        }
-        if(updatePost.getEmail() != null){
-            user.setEmail(updatePost.getEmail());
-        }
-        if(updatePost.getPassword() != null){
-            user.setPassword(updatePost.getPassword());
-        }
-        return userRepository.save(user);
+        user.setUsername(userRequest.getUsername());
+        user.setFirstname(userRequest.getFirstname());
+        user.setLastname(userRequest.getLastname());
+        user.setEmail(userRequest.getEmail());
+        userRepository.save(user);
+
+        return "Usuario actualizado exitosamente";
     }
 
     //DELETE USER
