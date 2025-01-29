@@ -13,18 +13,18 @@ La API está disponible en `http://localhost:8080`. A continuación, se describe
 
 ## Endpoint Disponible
 
-### Obtener Información de Usuario
+### Obtener Perfil de Usuario
 
 **Descripción:** Devuelve la información de un usuario basado en su ID.
 
 - **Método:** `GET`
-- **URL:** `/user/{id}`
+- **URL:** `/user/{username}`
 
 #### Parámetros
 
-| Parámetro | Tipo   | Descripción                  |
-|-----------|--------|------------------------------|
-| `id`      | `Long` | Identificador único del usuario |
+| Parámetro  | Tipo     | Descripción                  |
+|------------|----------|------------------------------|
+| `username` | `String` | Identificador único del usuario |
 
 #### Código de Respuesta
 
@@ -38,14 +38,13 @@ La API está disponible en `http://localhost:8080`. A continuación, se describe
 ### Solicitud
 
 ```bash
-GET http://localhost:8080/user/1
+GET http://localhost:8080/user/JaneDoe09
 ```
 
 ### Respuesta Exitosa (`200 OK`)
 
 ```json
 {
-  "id": 1,
   "username": "JaneDoe09",
   "firstName": "Jane",
   "lastName": "Doe",

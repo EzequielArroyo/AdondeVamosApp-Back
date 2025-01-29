@@ -24,14 +24,14 @@ public class User {
 
     private String password;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
-
-    @Column(nullable = false, unique = true)
-    private String email;
 
     @Column(nullable = false)
     private LocalDate birthdate;
@@ -42,13 +42,25 @@ public class User {
     private String phone;
 
     private String location;
-    @ElementCollection
-    private List<String> languages;
 
-    @Column(length = 500) // Limitar el tamaño del campo bio
+    @Column(length = 500)
     private String bio;
 
     private String occupation;
-    @ElementCollection
-    private List<String> interests;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_languages",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private List<Language> languages;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_interests",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id")
+    )
+    private List<Interest> interests;
 }
