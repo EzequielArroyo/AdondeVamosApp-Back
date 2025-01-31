@@ -1,21 +1,23 @@
 package com.adondevamos.adondevamos.Services;
 
 import com.adondevamos.adondevamos.Dto.UserCreateDTO;
+import com.adondevamos.adondevamos.Dto.UserDTO;
 import com.adondevamos.adondevamos.Entities.Interest;
 import com.adondevamos.adondevamos.Entities.Language;
 import com.adondevamos.adondevamos.Entities.User;
-import com.adondevamos.adondevamos.Dto.UserResponseDTO;
 import com.adondevamos.adondevamos.Exception.EntityAlreadyExistsException;
 import com.adondevamos.adondevamos.Exception.EntityNotFoundException;
 import com.adondevamos.adondevamos.Repositories.InterestRepository;
 import com.adondevamos.adondevamos.Repositories.LanguageRepository;
 import com.adondevamos.adondevamos.Repositories.UserRepository;
+import com.adondevamos.adondevamos.utils.UserMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,11 +28,13 @@ public class UserService {
     private LanguageRepository languageRepository;
     @Autowired
     private InterestRepository interestRepository;
+    @Autowired
+    private UserMapper userMapper;
 
-    public List<UserResponseDTO> getUsers() {
+    public List<UserDTO> getUsers() {
         List<User> userList = userRepository.findAll();
-        List<UserResponseDTO> userResponseList = userList.stream()
-                .map(user -> UserResponseDTO.builder()
+        return userList.stream()
+                .map(user -> UserDTO.builder()
                         .username(user.getUsername())
                         .firstName(user.getFirstName())
                         .lastName(user.getLastName())
@@ -44,30 +48,16 @@ public class UserService {
                         .occupation(user.getOccupation())
                         .interests(user.getInterests())
                         .build()).toList();
-        return userResponseList;
 
     }
-    public UserResponseDTO getUserByUsername(String username) {
+    public UserDTO getUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException(username + " not found"));
-        return UserResponseDTO.builder()
-                .username(user.getUsername())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .birthdate(user.getBirthdate())
-                .sex(user.getSex())
-                .phone(user.getPhone())
-                .location(user.getLocation())
-                .languages(user.getLanguages())
-                .bio(user.getBio())
-                .occupation(user.getOccupation())
-                .interests(user.getInterests())
-                .build();
+        return userMapper.toDTO(user);
     }
 
     @Transactional
-    public UserResponseDTO createUser(UserCreateDTO newUserRequest){
+    public UserDTO createUser(UserCreateDTO newUserRequest){
         if(userRepository.findByUsername(newUserRequest.getUsername()).isPresent()){
             throw new EntityAlreadyExistsException("Username: " + newUserRequest.getUsername() + " already exists");
         }
@@ -102,20 +92,35 @@ public class UserService {
 
         userRepository.save(user);
 
-        return UserResponseDTO.builder()
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .birthdate(user.getBirthdate())
-                .sex(user.getSex())
-                .phone(user.getPhone())
-                .location(user.getLocation())
-                .bio(user.getBio())
-                .occupation(user.getOccupation())
-                .languages(user.getLanguages())
-                .interests(user.getInterests())
-                .build();
+        return userMapper.toDTO(user);
     }
+    public UserDTO updateUser(String username, UserDTO updateData){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(username + " not found"));
+        User.builder()
+                .username(updateData.getUsername())
+                .email(updateData.getEmail())
+                .firstName(updateData.getFirstName())
+                .lastName(updateData.getLastName())
+                .birthdate(updateData.getBirthdate())
+                .sex(updateData.getSex())
+                .phone(updateData.getPhone())
+                .location(updateData.getLocation())
+                .bio(updateData.getBio())
+                .occupation(updateData.getOccupation())
+                .languages(updateData.getLanguages())
+                .interests(updateData.getInterests())
+                .build();
+
+        userRepository.save(user);
+
+        return userMapper.toDTO(user);
+    }
+    public UserDTO deleteUser(String username){
+        User user = userRepository.deleteUserByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(username + " not found"));
+        return userMapper.toDTO(user);
+    }
+
 
 }
