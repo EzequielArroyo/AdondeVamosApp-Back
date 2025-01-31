@@ -14,10 +14,9 @@ import com.adondevamos.adondevamos.utils.UserMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,8 +35,8 @@ public class UserService {
         return userList.stream()
                 .map(user -> UserDTO.builder()
                         .username(user.getUsername())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
+                        .firstname(user.getFirstname())
+                        .lastname(user.getLastname())
                         .email(user.getEmail())
                         .birthdate(user.getBirthdate())
                         .sex(user.getSex())
@@ -78,8 +77,8 @@ public class UserService {
                 .username(newUserRequest.getUsername())
                 .email(newUserRequest.getEmail())
                 .password(newUserRequest.getPassword())
-                .firstName(newUserRequest.getFirstName())
-                .lastName(newUserRequest.getLastName())
+                .firstname(newUserRequest.getFirstname())
+                .lastname(newUserRequest.getLastname())
                 .birthdate(newUserRequest.getBirthdate())
                 .sex(newUserRequest.getSex())
                 .phone(newUserRequest.getPhone())
@@ -97,20 +96,20 @@ public class UserService {
     public UserDTO updateUser(String username, UserDTO updateData){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException(username + " not found"));
-        User.builder()
-                .username(updateData.getUsername())
-                .email(updateData.getEmail())
-                .firstName(updateData.getFirstName())
-                .lastName(updateData.getLastName())
-                .birthdate(updateData.getBirthdate())
-                .sex(updateData.getSex())
-                .phone(updateData.getPhone())
-                .location(updateData.getLocation())
-                .bio(updateData.getBio())
-                .occupation(updateData.getOccupation())
-                .languages(updateData.getLanguages())
-                .interests(updateData.getInterests())
-                .build();
+
+        // UPDATING ATTRIBUTES TO THE EXISTING USER
+        user.setUsername(updateData.getUsername());
+        user.setEmail(updateData.getEmail());
+        user.setFirstname(updateData.getFirstname());
+        user.setLastname(updateData.getLastname());
+        user.setBirthdate(updateData.getBirthdate());
+        user.setSex(updateData.getSex());
+        user.setPhone(updateData.getPhone());
+        user.setLocation(updateData.getLocation());
+        user.setBio(updateData.getBio());
+        user.setOccupation(updateData.getOccupation());
+        user.setLanguages(updateData.getLanguages());
+        user.setInterests(updateData.getInterests());
 
         userRepository.save(user);
 

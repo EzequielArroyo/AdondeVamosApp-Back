@@ -1,4 +1,4 @@
-package com.adondevamos.adondevamos.config;
+package com.adondevamos.adondevamos.Config;
 
 import com.adondevamos.adondevamos.Entities.Activity;
 import com.adondevamos.adondevamos.Entities.Interest;
@@ -44,8 +44,8 @@ public class DataInit implements CommandLineRunner {
                     .username("juanperez")
                     .password("securepassword") // Recuerda encriptar contraseñas en producción
                     .email("juan@example.com")
-                    .firstName("Juan")
-                    .lastName("Pérez")
+                    .firstname("Juan")
+                    .lastname("Pérez")
                     .birthdate(LocalDate.of(1990, 5, 15)) // Cambia a la fecha que necesites
                     .sex("Male")
                     .phone("123456789")
@@ -60,8 +60,8 @@ public class DataInit implements CommandLineRunner {
                     .username("EZEarroyo")
                     .password("securepassword") // Recuerda encriptar contraseñas en producción
                     .email("eze@example.com")
-                    .firstName("EZequiel")
-                    .lastName("Arroyo")
+                    .firstname("EZequiel")
+                    .lastname("Arroyo")
                     .birthdate(LocalDate.of(1998, 11, 19)) // Cambia a la fecha que necesites
                     .sex("Male")
                     .phone("4455566677")

@@ -1,18 +1,19 @@
 package com.adondevamos.adondevamos.Controllers;
 
-import com.adondevamos.adondevamos.Dto.UserCreateDTO;
+
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
+
 import com.adondevamos.adondevamos.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -27,11 +28,6 @@ public class UserController {
         UserDTO response = userService.getUserByUsername(username);
          return ResponseEntity.ok(response);
 
-    }
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateDTO postRequest){
-        UserDTO newUserResponse = userService.createUser(postRequest);
-        return ResponseEntity.ok(newUserResponse);
     }
     @PutMapping("/{username}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable String username, @RequestBody UserDTO userData){
