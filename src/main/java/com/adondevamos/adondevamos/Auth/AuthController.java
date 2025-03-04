@@ -33,7 +33,7 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> validateToken(@PathVariable String token){
         boolean validToken = authService.validateToken(token);
         AuthenticationResponse response = AuthenticationResponse.builder()
-                .isAuthenticate(validToken)
+                .authenticate(validToken)
                 .build();
         return ResponseEntity.ok(response);
     }
