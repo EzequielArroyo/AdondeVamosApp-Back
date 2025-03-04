@@ -1,8 +1,6 @@
 package com.adondevamos.adondevamos.Controllers;
 
-
-import com.adondevamos.adondevamos.Dtos.Post.CreatePostDTO;
-import com.adondevamos.adondevamos.Dtos.Post.UpdatePostDTO;
+import com.adondevamos.adondevamos.Dto.PostCreateDTO;
 import com.adondevamos.adondevamos.Entities.Post;
 import com.adondevamos.adondevamos.Services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,39 +10,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping(value = "/post")
+@CrossOrigin(origins = "*")
 public class PostController {
-
     @Autowired
     private PostService postService;
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts(){
-        List<Post> posts = postService.getAllPosts();
-        return ResponseEntity.ok(posts);
+    public ResponseEntity<List<Post>> getPosts(){
+        List<Post> postList = postService.getPosts();
+        return ResponseEntity.ok(postList);
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id){
-        Post post = postService.getPostById(id);
-        return ResponseEntity.ok(post);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Post> getPostByTitle(@PathVariable Long id){
+        Post post = postService.getPotsByTitle(id);
+        return  ResponseEntity.ok(post);
     }
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody CreatePostDTO request){
-        Post createdPost = postService.createPost(request);
-        return ResponseEntity.ok(createdPost);
-
+    public ResponseEntity<Post> createPost(@RequestBody PostCreateDTO newPost){
+        Post createdpost = postService.createPost(newPost);
+        return ResponseEntity.ok(createdpost);
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody UpdatePostDTO updatePost){
-        Post updatedPost = postService.updatePost(id, updatePost);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatePost){
+        Post updatedPost = postService.updatePost(id,updatePost);
         return ResponseEntity.ok(updatedPost);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id){
-        postService.deletePostById(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Post> deletePost(@PathVariable long id){
+        Post deletedPost = postService.deletePostById(id);
+        return ResponseEntity.ok(deletedPost);
     }
+
 }

@@ -1,16 +1,15 @@
 package com.adondevamos.adondevamos.Services;
 
-import com.adondevamos.adondevamos.Dtos.Post.CreatePostDTO;
-import com.adondevamos.adondevamos.Dtos.Post.UpdatePostDTO;
+import com.adondevamos.adondevamos.Dto.PostCreateDTO;
 import com.adondevamos.adondevamos.Entities.Post;
 import com.adondevamos.adondevamos.Entities.User;
+import com.adondevamos.adondevamos.Exception.EntityNotFoundException;
 import com.adondevamos.adondevamos.Repositories.PostRepository;
 import com.adondevamos.adondevamos.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 public class PostService {
@@ -19,52 +18,42 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    //CREATE POST
-    public Post createPost(CreatePostDTO request){
-        User user = userRepository.findById(request.getCreatedBy())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Post post = new Post();
-        post.setTitle(request.getTitle());
-        post.setCreateBy(user);
-        return postRepository.save(post);
-    }
-
-    //GET ALL POSTS
-    public List<Post> getAllPosts(){
+    public List<Post> getPosts() {
         return postRepository.findAll();
     }
 
-    //GET POST
-    public Post getPostById(Long postId){
-        return postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+    public Post getPotsByTitle(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("post with id: " + id + "not found"));
     }
 
-    //PUT POST
-    public Post updatePost(Long postId, UpdatePostDTO updatePost) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
-
-
-        if (updatePost.getTitle() != null) {
-            post.setTitle(updatePost.getTitle());
-        }
-        if (updatePost.getParticipantsId() != null) {
-            List<Long> participantsId = updatePost.getParticipantsId();
-            List<User> participantsUser = participantsId.stream()
-                    .map(id -> userRepository.findById(id)
-                            .orElseThrow(() -> new RuntimeException("User with ID " + id + " not found")))
-                    .toList();
-            post.getJoinedUsers().addAll(participantsUser);
-        }
-        return postRepository.save(post);
+    public Post createPost(PostCreateDTO postRequest) {
+        User postOwner = userRepository.findByUsername(postRequest.getOwnerUsername())
+                .orElseThrow(() -> new EntityNotFoundException(postRequest.getOwnerUsername() + " not found"));
+        Post newPost = Post.builder()
+                .title(postRequest.getTitle())
+                .datetime(postRequest.getDatetime())
+                .description(postRequest.getDescription())
+                .location(postRequest.getLocation())
+                .owner(postOwner)
+                .cantParticipants(0)
+                .maxParticipants(postRequest.getMaxParticipants())
+                .category(postRequest.getCategory())
+                .build();
+        return postRepository.save(newPost);
     }
-    //DELETE POST
-    public void deletePostById(Long postId){
-        if(postRepository.existsById(postId)){
-            postRepository.deleteById(postId);
-        }else{
-            throw new RuntimeException("Post with ID " + postId + " not found");
-        }
+
+    public Post updatePost(Long id, Post updatePost) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("post with id: " + id + "not found"));
+        postRepository.save(updatePost);
+        return updatePost;
+    }
+
+    public Post deletePostById(long id)  {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("post with id: " + id + "not found"));
+        postRepository.deleteById(id);
+        return post;
     }
 }

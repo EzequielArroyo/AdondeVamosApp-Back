@@ -1,49 +1,50 @@
 package com.adondevamos.adondevamos.Controllers;
 
-import com.adondevamos.adondevamos.Dtos.User.UserDTO;
-import com.adondevamos.adondevamos.Entities.UserRequest;
+
+
+import com.adondevamos.adondevamos.Dto.UserDTO;
+
+import com.adondevamos.adondevamos.Entities.User;
 import com.adondevamos.adondevamos.Services.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
-@RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200"})
+@RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    /*GET ALL USERS
     @GetMapping
-
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        List<UserDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserDTO>> getUsers(){
+        List<UserDTO> userList = userService.getUsers();
+        return ResponseEntity.ok(userList);
     }
-    */
+    @GetMapping("/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username){
+        UserDTO response = userService.getUserByUsername(username);
+         return ResponseEntity.ok(response);
 
-    //GET USER BY ID
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
-       UserDTO user = userService.getUserById(id);
-       return ResponseEntity.ok(user);
     }
+    @PutMapping("/{username}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String username, @RequestBody UserDTO userData){
+        UserDTO updatedUserResponse = userService.updateUser(username, userData);
+        return ResponseEntity.ok(updatedUserResponse);
 
-    //EDIT USER
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserRequest userUpdated){
-        String message = userService.updateUser(id, userUpdated);
-        return ResponseEntity.ok(message);
     }
-    //DELETE USER
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        userService.deleteUserById(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{username}")
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable String username){
+        UserDTO deletedUserResponse = userService.deleteUser(username);
+        return  ResponseEntity.ok(deletedUserResponse);
+    }
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getProfile(@AuthenticationPrincipal User user) {
+        UserDTO response = userService.getProfile(user);
+        return ResponseEntity.ok(response);
     }
 }

@@ -1,51 +1,73 @@
-# API REST en Spring Boot
 
-Este proyecto es una API REST desarrollada en **Spring Boot** que respalda una página web donde las personas pueden crear o unirse a actividades. El backend permite gestionar y obtener información sobre actividades, usuarios, y otros datos relacionados.
+# Proyecto CRUD en Spring Boot
+
+## Descripción
+
+Este proyecto es una API REST desarrollada en **Spring Boot** que implementa un CRUD para gestionar las siguientes entidades:
+
+- **Activity**: Representa una actividad con un título, fecha y hora, descripción, ubicación, propietario, participantes, número máximo de participantes y categoría.
+- **User**: Representa un usuario con información personal, intereses y los idiomas que habla.
+- **Interest**: Representa un interés específico de los usuarios.
+- **Language**: Representa un idioma que los usuarios pueden hablar.
 
 ## Tabla de Contenidos
 - [Uso](#uso)
 - [Endpoint Disponible](#endpoint-disponible)
 - [Ejemplo de Respuesta](#ejemplo-de-respuesta)
 - [Tecnologías Usadas](#tecnologías-usadas)
-## Uso
+## Tecnologías utilizadas
 
-La API está disponible en `http://localhost:8080`. A continuación, se describe el único endpoint disponible actualmente.
+- **Java 17**
+- **Spring Boot 3**
+- **Spring Data JPA**
+- **MySQL** 
+- **Lombok**
+- **Maven**
+## Instalación y configuración
 
-## Endpoint Disponible
+1. Clona este repositorio:
+   ```sh
+   git clone https://github.com/tu-usuario/tu-repo.git
+   ```
+2. Accede al directorio del proyecto:
+   ```sh
+   cd tu-repo
+   ```
+3. Configura la base de datos en `application.properties` o `application.yml`:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/tu_base_datos
+   spring.datasource.username=tu_usuario
+   spring.datasource.password=tu_contraseña
+   spring.jpa.hibernate.ddl-auto=update
+   ```
+4. Ejecuta la aplicación:
+   ```sh
+   mvn spring-boot:run
+   ```
 
-### Obtener Información de Usuario
+## Endpoints principales
 
-**Descripción:** Devuelve la información de un usuario basado en su ID.
+## Usuarios (`/users`)
 
-- **Método:** `GET`
-- **URL:** `/user/{id}`
+| Método | Endpoint      | Descripción               |
+| ------ | ------------- | ------------------------- |
+| GET    | `/users`      | Listar todos los usuarios |
+| GET    | `/users/{id}` | Obtener usuario por ID    |
+| POST   | `/users`      | Crear un nuevo usuario    |
+| PUT    | `/users/{id}` | Actualizar un usuario     |
+| DELETE | `/users/{id}` | Eliminar un usuario       |
 
-#### Parámetros
 
-| Parámetro | Tipo   | Descripción                  |
-|-----------|--------|------------------------------|
-| `id`      | `Long` | Identificador único del usuario |
-
-#### Código de Respuesta
-
-| Código | Descripción               |
-|--------|---------------------------|
-| `200`  | Solicitud exitosa         |
-| `404`  | Usuario no encontrado     |
-
-## Ejemplo de Respuesta
-
-### Solicitud
+###  EJemplo de solicitud
 
 ```bash
-GET http://localhost:8080/user/1
+GET http://localhost:8080/user/JaneDoe09
 ```
 
 ### Respuesta Exitosa (`200 OK`)
 
 ```json
 {
-  "id": 1,
   "username": "JaneDoe09",
   "firstName": "Jane",
   "lastName": "Doe",
@@ -91,9 +113,21 @@ GET http://localhost:8080/user/1
 }
 ```
 
-## Tecnologías Usadas
+## Actividades (`/activities`)
 
-- Java 17
-- Spring Boot
-- Maven
-- JSON
+| Método | Endpoint           | Descripción                  |
+| ------ | ------------------ | ---------------------------- |
+| GET    | `/activities`      | Listar todas las actividades |
+| GET    | `/activities/{id}` | Obtener actividad por ID     |
+| POST   | `/activities`      | Crear una nueva actividad    |
+| PUT    | `/activities/{id}` | Actualizar una actividad     |
+| DELETE | `/activities/{id}` | Eliminar una actividad       |
+
+
+
+
+
+
+
+
+

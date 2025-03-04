@@ -1,5 +1,4 @@
-package com.adondevamos.adondevamos.Auth;
-
+package com.adondevamos.adondevamos.Dto;
 import com.adondevamos.adondevamos.Entities.Interest;
 import com.adondevamos.adondevamos.Entities.Language;
 import lombok.AllArgsConstructor;
@@ -10,21 +9,20 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class RegisterRequest {
+public class UserDTO {
     private String username;
-    private String password;
+    private String email;
     private String firstname;
     private String lastname;
-    private String email;
     private LocalDate birthdate;
     private String sex;
     private String phone;
     private String location;
-    private List<Language> languages;
     private String bio;
     private String occupation;
+    private List<Language> languages;
     private List<Interest> interests;
 }

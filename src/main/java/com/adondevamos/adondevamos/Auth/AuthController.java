@@ -1,14 +1,12 @@
 package com.adondevamos.adondevamos.Auth;
 
-import com.adondevamos.adondevamos.Dtos.User.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final AuthService authService;
@@ -17,13 +15,17 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
     }
-    @PostMapping(value = "register")
+    @GetMapping(value = "register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(authService.register(request));
     }
-    @GetMapping("/user")
-    public ResponseEntity<UserDTO> getUserData(Authentication  authentication) {
-        UserDTO user = authService.getUserByUsername(authentication.getName());
-        return ResponseEntity.ok(user);
+    @GetMapping(value = "/authenticate/{token}")
+    public ResponseEntity<AuthenticationResponse> validateToken(@PathVariable String token){
+        boolean validToken = authService.validateToken(token);
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                .authenticate(validToken)
+                .build();
+        return ResponseEntity.ok(response);
     }
+
 }

@@ -1,35 +1,58 @@
 package com.adondevamos.adondevamos.Entities;
-import jakarta.persistence.*;
-import lombok.*;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "post")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
+@Builder
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long id;
 
-    @Column(name = "title")
-    @Setter
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private LocalDateTime datetime;
+
+    private String description;
+
+    private String location;
     @ManyToOne
-    @JoinColumn(name = "createBy")
-    @Setter
-    private User createBy;
+    @JoinColumn(nullable = false)
+    private User owner;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
-            name = "post_users", // Name of the intermediate table
-            joinColumns = @JoinColumn(name = "post_id"), // Primary key of Post
-            inverseJoinColumns = @JoinColumn(name = "user_id"))// Primary key of User
-    @Setter
-    private List<User> joinedUsers;
+            name = "activity_participants",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "activity_id")
+    )
+    private List<User> participants;
 
+    private Integer cantParticipants;
+
+    @Column(nullable = false)
+    private Integer maxParticipants;
+
+    @Column(nullable = false)
+    private String category;
+
+    public void joinActivity(User user){
+        this.participants.add(user);
+    }
+    public void leaveActivity(User user){
+        this.participants.remove(user);
+    }
 
 }

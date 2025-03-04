@@ -1,53 +1,77 @@
 package com.adondevamos.adondevamos.Entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Entity
-@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(name = "firstname")
-    private String firstname;
-
-    @Column(name = "lastname")
-    private String lastname;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    @ManyToMany(mappedBy = "joinedUsers", fetch = FetchType.LAZY)
-    private List<Post> joinedPost;
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
+
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
+
+    @Column(nullable = false)
+    private LocalDate birthdate;
+
+    @Column(nullable = false)
+    private String sex;
+
+    private String phone;
+
+    private String location;
+
+    @Column(length = 500)
+    private String bio;
+
+    private String occupation;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_languages",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private List<Language> languages;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_interests",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id")
+    )
+    private List<Interest> interests;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of();
     }
-    // todos devuelvan true ya no lo vamos a estar usando(el token ya tiene esa informacion)
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

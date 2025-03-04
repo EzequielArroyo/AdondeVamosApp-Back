@@ -1,4 +1,4 @@
-package com.adondevamos.adondevamos.Auth;
+package com.adondevamos.adondevamos.Dto;
 
 import com.adondevamos.adondevamos.Entities.Interest;
 import com.adondevamos.adondevamos.Entities.Language;
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterRequest {
+public class UserCreateDTO {
     private String username;
     private String password;
     private String firstname;
