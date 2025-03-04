@@ -2,9 +2,11 @@ package com.adondevamos.adondevamos.Auth;
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -27,4 +29,13 @@ public class AuthController {
         UserDTO user = authService.getUserProfile(authentication.getName());
         return ResponseEntity.ok(user);
     }
+    @GetMapping(value = "/authenticate/{token}")
+    public ResponseEntity<AuthenticationResponse> validateToken(@PathVariable String token){
+        boolean validToken = authService.validateToken(token);
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                .isAuthenticate(validToken)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
 }

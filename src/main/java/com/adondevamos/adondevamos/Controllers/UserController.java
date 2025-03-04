@@ -4,9 +4,11 @@ package com.adondevamos.adondevamos.Controllers;
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
 
+import com.adondevamos.adondevamos.Entities.User;
 import com.adondevamos.adondevamos.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,5 +41,10 @@ public class UserController {
     public ResponseEntity<UserDTO> deleteUser(@PathVariable String username){
         UserDTO deletedUserResponse = userService.deleteUser(username);
         return  ResponseEntity.ok(deletedUserResponse);
+    }
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getProfile(@AuthenticationPrincipal User user) {
+        UserDTO response = userService.getProfile(user);
+        return ResponseEntity.ok(response);
     }
 }

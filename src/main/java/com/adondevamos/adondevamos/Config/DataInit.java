@@ -1,15 +1,16 @@
 package com.adondevamos.adondevamos.Config;
 
-import com.adondevamos.adondevamos.Entities.Activity;
+import com.adondevamos.adondevamos.Entities.Post;
 import com.adondevamos.adondevamos.Entities.Interest;
 import com.adondevamos.adondevamos.Entities.Language;
 import com.adondevamos.adondevamos.Entities.User;
-import com.adondevamos.adondevamos.Repositories.ActivityRepository;
+import com.adondevamos.adondevamos.Repositories.PostRepository;
 import com.adondevamos.adondevamos.Repositories.InterestRepository;
 import com.adondevamos.adondevamos.Repositories.LanguageRepository;
 import com.adondevamos.adondevamos.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -25,7 +26,9 @@ public class DataInit implements CommandLineRunner {
     @Autowired
     private InterestRepository interestRepository;
     @Autowired
-    private ActivityRepository activityRepository;
+    private PostRepository postRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
@@ -42,11 +45,11 @@ public class DataInit implements CommandLineRunner {
 
             User user1 = User.builder()
                     .username("juanperez")
-                    .password("securepassword") // Recuerda encriptar contraseñas en producción
+                    .password(passwordEncoder.encode("contra"))
                     .email("juan@example.com")
                     .firstname("Juan")
                     .lastname("Pérez")
-                    .birthdate(LocalDate.of(1990, 5, 15)) // Cambia a la fecha que necesites
+                    .birthdate(LocalDate.of(1990, 5, 15))
                     .sex("Male")
                     .phone("123456789")
                     .location("Chaco, Argentina")
@@ -58,11 +61,11 @@ public class DataInit implements CommandLineRunner {
 
             User user2 = User.builder()
                     .username("EZEarroyo")
-                    .password("securepassword") // Recuerda encriptar contraseñas en producción
+                    .password(passwordEncoder.encode("contra"))
                     .email("eze@example.com")
                     .firstname("EZequiel")
                     .lastname("Arroyo")
-                    .birthdate(LocalDate.of(1998, 11, 19)) // Cambia a la fecha que necesites
+                    .birthdate(LocalDate.of(1998, 11, 19))
                     .sex("Male")
                     .phone("4455566677")
                     .location("Buenos Aires, Argentina")
@@ -73,31 +76,31 @@ public class DataInit implements CommandLineRunner {
                     .build();
             userRepository.saveAll(List.of(user1, user2));
 
-            Activity activity1 = Activity.builder()
+            Post activity1 = Post.builder()
                     .title("Torneo de Fútbol 5")
                     .datetime(LocalDateTime.of(2024, 3, 15, 18, 30))
                     .description("Partido amistoso de fútbol 5 en el club deportivo.")
                     .location("Buenos Aires, Argentina")
                     .owner(user1) // Asegúrate de tener una instancia de User
                     .participants(List.of(user2))
+                    .cantParticipants(1)
                     .maxParticipants(10)
                     .category("Deportes")
                     .build();
 
-            Activity activity2 = Activity.builder()
+            Post activity2 = Post.builder()
                     .title("Noche de Juegos de Mesa")
                     .datetime(LocalDateTime.of(2024, 3, 22, 20, 0))
                     .description("Evento de juegos de mesa en un café temático.")
                     .location("Córdoba, Argentina")
                     .owner(user2) // Asegúrate de tener una instancia de User
                     .participants(List.of(user1))
+                    .cantParticipants(1)
                     .maxParticipants(8)
                     .category("Ocio")
                     .build();
-            activityRepository.saveAll(List.of(activity1, activity2));
-
-        }
-
+            postRepository.saveAll(List.of(activity1, activity2));
             System.out.println("📌 Datos inicializados correctamente.");
+        }
     }
 }

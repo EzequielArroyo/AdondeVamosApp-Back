@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Activity {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,6 +39,8 @@ public class Activity {
             inverseJoinColumns = @JoinColumn(name = "activity_id")
     )
     private List<User> participants;
+
+    private Integer cantParticipants;
 
     @Column(nullable = false)
     private Integer maxParticipants;
