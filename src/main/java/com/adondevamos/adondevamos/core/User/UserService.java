@@ -1,11 +1,11 @@
 package com.adondevamos.adondevamos.core.User;
 
 
+import com.adondevamos.adondevamos.Config.UserDetailsImpl;
 import com.adondevamos.adondevamos.Dto.UserDTO;
 
 import com.adondevamos.adondevamos.Exception.EntityNotFoundException;
-import com.adondevamos.adondevamos.core.Category.CategoryRepository;
-import com.adondevamos.adondevamos.core.Language.LanguageRepository;
+
 import com.adondevamos.adondevamos.utils.UserMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +76,8 @@ public class UserService {
         return userMapper.toDTO(user);
     }
     public UserDTO getProfile(Authentication authentication){
-        User user = (User) authentication.getPrincipal();
-        //User user = userRepository.findByUsername().orElseThrow();
-        return userMapper.toDTO(user);
+        UserDetailsImpl userDetail = (UserDetailsImpl) authentication.getPrincipal();
+        return getUserByUsername(userDetail.getUsername());
     }
 
 

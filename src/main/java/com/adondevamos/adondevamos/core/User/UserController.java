@@ -43,7 +43,7 @@ public class UserController {
         UserDTO deletedUserResponse = userService.deleteUser(username);
         return  ResponseEntity.ok(deletedUserResponse);
     }
-    @GetMapping(value = "profile")
+    @GetMapping(value = "/profile")
     public ResponseEntity<UserDTO> getProfile(Authentication authentication){
         return ResponseEntity.ok(userService.getProfile(authentication));
     }
