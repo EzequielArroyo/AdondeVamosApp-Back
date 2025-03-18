@@ -1,19 +1,23 @@
 package com.adondevamos.adondevamos.Auth;
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
-import com.adondevamos.adondevamos.Entities.Interest;
-import com.adondevamos.adondevamos.Entities.Language;
-import com.adondevamos.adondevamos.Entities.User;
+
+import com.adondevamos.adondevamos.core.Category.Category;
+import com.adondevamos.adondevamos.core.Category.CategoryRepository;
+import com.adondevamos.adondevamos.core.Category.CategoryService;
+import com.adondevamos.adondevamos.core.Language.Language;
+import com.adondevamos.adondevamos.core.User.User;
 import com.adondevamos.adondevamos.Exception.EntityAlreadyExistsException;
 import com.adondevamos.adondevamos.Exception.EntityNotFoundException;
 import com.adondevamos.adondevamos.Jwt.JwtService;
-import com.adondevamos.adondevamos.Repositories.InterestRepository;
-import com.adondevamos.adondevamos.Repositories.LanguageRepository;
-import com.adondevamos.adondevamos.Repositories.UserRepository;
+
+import com.adondevamos.adondevamos.core.Language.LanguageRepository;
+import com.adondevamos.adondevamos.core.User.UserRepository;
 import com.adondevamos.adondevamos.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,7 +36,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
-    private  final InterestRepository interestRepository;
+    private  final CategoryRepository categoryRepository;
     private final LanguageRepository languageRepository;
     private final UserMapper userMapper;
 
@@ -40,8 +44,9 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-        String token = jwtService.getToken(user);
+        String token = jwtService.generateToken(user);
         return AuthResponse.builder()
+                .isSuccess(true)
                 .token(token)
                 .build();
     }
@@ -58,10 +63,10 @@ public class AuthService {
                         .orElseThrow(() -> new EntityNotFoundException(languageDTO.getName() + " not found")))
                 .collect(Collectors.toList());
 
-        List<Interest> interests = newUserRequest.getInterests().stream()
-                .map(interestDTO -> interestRepository.findById(interestDTO.getId())
-                        .orElseThrow(() -> new EntityNotFoundException(interestDTO.getName() + " not found")))
-                .collect(Collectors.toList());
+        List<Category> categories = newUserRequest.getCategories().stream()
+                .map(categoryDTO -> categoryRepository.findById(categoryDTO.getId())
+                        .orElseThrow(() -> new EntityNotFoundException(categoryDTO.getName() + " not found")))
+                .toList();
 
         User user = User.builder()
                 .username(newUserRequest.getUsername())
@@ -76,20 +81,14 @@ public class AuthService {
                 .bio(newUserRequest.getBio())
                 .occupation(newUserRequest.getOccupation())
                 .languages(languages)
-                .interests(interests)
+                .categories(categories)
                 .build();
 
         userRepository.save(user);
 
         return AuthResponse.builder()
-                .token("")
+                .isSuccess(true)
                 .build();
-    }
-    public UserDTO getUserProfile(String username){
-
-        User user = userRepository.findByUsername(username).orElseThrow();
-
-        return userMapper.toDTO(user);
     }
 
     public Boolean validateToken(String token) {

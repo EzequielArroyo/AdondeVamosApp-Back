@@ -1,17 +1,15 @@
-package com.adondevamos.adondevamos.Services;
+package com.adondevamos.adondevamos.core.User;
 
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
 
-import com.adondevamos.adondevamos.Entities.User;
-
 import com.adondevamos.adondevamos.Exception.EntityNotFoundException;
-import com.adondevamos.adondevamos.Repositories.InterestRepository;
-import com.adondevamos.adondevamos.Repositories.LanguageRepository;
-import com.adondevamos.adondevamos.Repositories.UserRepository;
+import com.adondevamos.adondevamos.core.Category.CategoryRepository;
+import com.adondevamos.adondevamos.core.Language.LanguageRepository;
 import com.adondevamos.adondevamos.utils.UserMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 
@@ -25,7 +23,7 @@ public class UserService {
     @Autowired
     private LanguageRepository languageRepository;
     @Autowired
-    private InterestRepository interestRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
     private UserMapper userMapper;
 
@@ -44,7 +42,7 @@ public class UserService {
                         .languages(user.getLanguages())
                         .bio(user.getBio())
                         .occupation(user.getOccupation())
-                        .interests(user.getInterests())
+                        .categories(user.getCategories())
                         .build()).toList();
 
     }
@@ -70,7 +68,7 @@ public class UserService {
         user.setBio(updateData.getBio());
         user.setOccupation(updateData.getOccupation());
         user.setLanguages(updateData.getLanguages());
-        user.setInterests(updateData.getInterests());
+        user.setCategories(updateData.getCategories());
 
         userRepository.save(user);
 
@@ -81,7 +79,9 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException(username + " not found"));
         return userMapper.toDTO(user);
     }
-    public UserDTO getProfile(User user){
+    public UserDTO getProfile(Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        //User user = userRepository.findByUsername().orElseThrow();
         return userMapper.toDTO(user);
     }
 

@@ -1,15 +1,15 @@
-package com.adondevamos.adondevamos.Entities;
+package com.adondevamos.adondevamos.core.User;
 
+
+import com.adondevamos.adondevamos.core.Category.Category;
+import com.adondevamos.adondevamos.core.Language.Language;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -65,30 +65,6 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "interest_id")
     )
-    private List<Interest> interests;
+    private List<Category> categories;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

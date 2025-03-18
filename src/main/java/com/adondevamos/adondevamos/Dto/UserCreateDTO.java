@@ -1,7 +1,7 @@
 package com.adondevamos.adondevamos.Dto;
 
-import com.adondevamos.adondevamos.Entities.Interest;
-import com.adondevamos.adondevamos.Entities.Language;
+import com.adondevamos.adondevamos.core.Category.Category;
+import com.adondevamos.adondevamos.core.Language.Language;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,5 +26,5 @@ public class UserCreateDTO {
     private List<Language> languages;
     private String bio;
     private String occupation;
-    private List<Interest> interests;
+    private List<Category> categories;
 }

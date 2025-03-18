@@ -1,5 +1,7 @@
-package com.adondevamos.adondevamos.Entities;
+package com.adondevamos.adondevamos.core.Post;
 
+import com.adondevamos.adondevamos.core.Category.Category;
+import com.adondevamos.adondevamos.core.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,8 +47,9 @@ public class Post {
     @Column(nullable = false)
     private Integer maxParticipants;
 
-    @Column(nullable = false)
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public void joinActivity(User user){
         this.participants.add(user);

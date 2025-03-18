@@ -1,11 +1,9 @@
-package com.adondevamos.adondevamos.Services;
+package com.adondevamos.adondevamos.core.Post;
 
 import com.adondevamos.adondevamos.Dto.PostCreateDTO;
-import com.adondevamos.adondevamos.Entities.Post;
-import com.adondevamos.adondevamos.Entities.User;
+import com.adondevamos.adondevamos.core.User.User;
 import com.adondevamos.adondevamos.Exception.EntityNotFoundException;
-import com.adondevamos.adondevamos.Repositories.PostRepository;
-import com.adondevamos.adondevamos.Repositories.UserRepository;
+import com.adondevamos.adondevamos.core.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

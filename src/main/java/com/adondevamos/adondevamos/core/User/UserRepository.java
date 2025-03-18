@@ -1,6 +1,5 @@
-package com.adondevamos.adondevamos.Repositories;
+package com.adondevamos.adondevamos.core.User;
 
-import com.adondevamos.adondevamos.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

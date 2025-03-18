@@ -1,7 +1,5 @@
-package com.adondevamos.adondevamos.Services;
+package com.adondevamos.adondevamos.core.Language;
 
-import com.adondevamos.adondevamos.Entities.Language;
-import com.adondevamos.adondevamos.Repositories.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

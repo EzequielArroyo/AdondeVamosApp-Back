@@ -1,8 +1,5 @@
-package com.adondevamos.adondevamos.Controllers;
+package com.adondevamos.adondevamos.core.Language;
 
-import com.adondevamos.adondevamos.Entities.Language;
-import com.adondevamos.adondevamos.Repositories.LanguageRepository;
-import com.adondevamos.adondevamos.Services.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

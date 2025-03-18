@@ -1,7 +1,7 @@
 package com.adondevamos.adondevamos.utils;
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
-import com.adondevamos.adondevamos.Entities.User;
+import com.adondevamos.adondevamos.core.User.User;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +23,7 @@ public class UserMapper {
                 .bio(user.getBio())
                 .occupation(user.getOccupation())
                 .languages(user.getLanguages())
-                .interests(user.getInterests())
+                .categories(user.getCategories())
                 .build();
     }
 }

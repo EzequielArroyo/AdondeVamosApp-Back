@@ -1,17 +1,14 @@
-package com.adondevamos.adondevamos.Entities;
+package com.adondevamos.adondevamos.core.Language;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Interest {
+public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,13 +1,15 @@
 package com.adondevamos.adondevamos.Config;
 
-import com.adondevamos.adondevamos.Entities.Post;
-import com.adondevamos.adondevamos.Entities.Interest;
-import com.adondevamos.adondevamos.Entities.Language;
-import com.adondevamos.adondevamos.Entities.User;
-import com.adondevamos.adondevamos.Repositories.PostRepository;
-import com.adondevamos.adondevamos.Repositories.InterestRepository;
-import com.adondevamos.adondevamos.Repositories.LanguageRepository;
-import com.adondevamos.adondevamos.Repositories.UserRepository;
+import com.adondevamos.adondevamos.core.Category.Category;
+import com.adondevamos.adondevamos.core.Category.CategoryRepository;
+import com.adondevamos.adondevamos.core.Post.Post;
+
+import com.adondevamos.adondevamos.core.Language.Language;
+import com.adondevamos.adondevamos.core.User.User;
+import com.adondevamos.adondevamos.core.Post.PostRepository;
+
+import com.adondevamos.adondevamos.core.Language.LanguageRepository;
+import com.adondevamos.adondevamos.core.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +26,7 @@ public class DataInit implements CommandLineRunner {
     @Autowired
     private LanguageRepository languageRepository;
     @Autowired
-    private InterestRepository interestRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
     private PostRepository postRepository;
     @Autowired
@@ -38,10 +40,10 @@ public class DataInit implements CommandLineRunner {
             Language language3 = new Language(null, "Spanish");
             languageRepository.saveAll(List.of(language1, language2, language3));
 
-            Interest interest1 = Interest.builder().name("Sports").build();
-            Interest interest2 = Interest.builder().name("VideoGames").build();
-            Interest interest3 = Interest.builder().name("Partys").build();
-            interestRepository.saveAll(List.of(interest1, interest2, interest3));
+            Category category1 = Category.builder().name("Sports").build();
+            Category category2 = Category.builder().name("VideoGames").build();
+            Category category3 = Category.builder().name("Partys").build();
+            categoryRepository.saveAll(List.of(category1, category2, category3));
 
             User user1 = User.builder()
                     .username("juanperez")
@@ -56,7 +58,7 @@ public class DataInit implements CommandLineRunner {
                     .bio("Apasionado por la tecnología y los viajes.")
                     .occupation("Ingeniero de Software")
                     .languages(List.of(language1, language2)) // Asegúrate de tener instancias de Language
-                    .interests(List.of(interest1, interest2)) // Asegúrate de tener instancias de Interest
+                    .categories(List.of(category1, category2)) // Asegúrate de tener instancias de Interest
                     .build();
 
             User user2 = User.builder()
@@ -72,7 +74,7 @@ public class DataInit implements CommandLineRunner {
                     .bio("Apasionado por la tecnología y los viajes.")
                     .occupation("Ingeniero de Software")
                     .languages(List.of(language1, language3)) // Asegúrate de tener instancias de Language
-                    .interests(List.of(interest1, interest3)) // Asegúrate de tener instancias de Interest
+                    .categories(List.of(category1, category3)) // Asegúrate de tener instancias de Interest
                     .build();
             userRepository.saveAll(List.of(user1, user2));
 
@@ -85,7 +87,7 @@ public class DataInit implements CommandLineRunner {
                     .participants(List.of(user2))
                     .cantParticipants(1)
                     .maxParticipants(10)
-                    .category("Deportes")
+                    .category(category1)
                     .build();
 
             Post activity2 = Post.builder()
@@ -97,7 +99,7 @@ public class DataInit implements CommandLineRunner {
                     .participants(List.of(user1))
                     .cantParticipants(1)
                     .maxParticipants(8)
-                    .category("Ocio")
+                    .category(category2)
                     .build();
             postRepository.saveAll(List.of(activity1, activity2));
             System.out.println("📌 Datos inicializados correctamente.");

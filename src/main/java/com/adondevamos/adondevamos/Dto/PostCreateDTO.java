@@ -1,6 +1,7 @@
 package com.adondevamos.adondevamos.Dto;
 
 
+import com.adondevamos.adondevamos.core.Category.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +20,5 @@ public class PostCreateDTO {
     private String location;
     private String ownerUsername;
     private Integer maxParticipants;
-    private String category;
+    private Category category;
 }

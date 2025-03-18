@@ -1,20 +1,21 @@
-package com.adondevamos.adondevamos.Controllers;
+package com.adondevamos.adondevamos.core.User;
 
 
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
 
-import com.adondevamos.adondevamos.Entities.User;
-import com.adondevamos.adondevamos.Services.UserService;
+import com.adondevamos.adondevamos.Config.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
@@ -42,9 +43,8 @@ public class UserController {
         UserDTO deletedUserResponse = userService.deleteUser(username);
         return  ResponseEntity.ok(deletedUserResponse);
     }
-    @GetMapping("/profile")
-    public ResponseEntity<UserDTO> getProfile(@AuthenticationPrincipal User user) {
-        UserDTO response = userService.getProfile(user);
-        return ResponseEntity.ok(response);
+    @GetMapping(value = "profile")
+    public ResponseEntity<UserDTO> getProfile(Authentication authentication){
+        return ResponseEntity.ok(userService.getProfile(authentication));
     }
 }
