@@ -21,10 +21,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private LanguageRepository languageRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
     private UserMapper userMapper;
 
     public List<UserDTO> getUsers() {

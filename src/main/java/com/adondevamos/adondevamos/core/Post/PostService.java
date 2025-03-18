@@ -42,7 +42,7 @@ public class PostService {
     }
 
     public Post updatePost(Long id, Post updatePost) {
-        Post post = postRepository.findById(id)
+        postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("post with id: " + id + "not found"));
         postRepository.save(updatePost);
         return updatePost;

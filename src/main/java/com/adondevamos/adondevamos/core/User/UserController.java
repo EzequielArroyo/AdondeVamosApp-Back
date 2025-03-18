@@ -4,7 +4,7 @@ package com.adondevamos.adondevamos.core.User;
 
 import com.adondevamos.adondevamos.Dto.UserDTO;
 
-import com.adondevamos.adondevamos.Config.UserDetailsImpl;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

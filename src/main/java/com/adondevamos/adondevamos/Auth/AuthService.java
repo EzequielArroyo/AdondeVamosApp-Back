@@ -1,10 +1,10 @@
 package com.adondevamos.adondevamos.Auth;
 
-import com.adondevamos.adondevamos.Dto.UserDTO;
+
 
 import com.adondevamos.adondevamos.core.Category.Category;
 import com.adondevamos.adondevamos.core.Category.CategoryRepository;
-import com.adondevamos.adondevamos.core.Category.CategoryService;
+
 import com.adondevamos.adondevamos.core.Language.Language;
 import com.adondevamos.adondevamos.core.User.User;
 import com.adondevamos.adondevamos.Exception.EntityAlreadyExistsException;
@@ -17,7 +17,7 @@ import com.adondevamos.adondevamos.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,7 +38,7 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
     private  final CategoryRepository categoryRepository;
     private final LanguageRepository languageRepository;
-    private final UserMapper userMapper;
+
 
 
     public AuthResponse login(LoginRequest request) {

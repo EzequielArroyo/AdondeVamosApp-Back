@@ -1,9 +1,9 @@
 package com.adondevamos.adondevamos.Auth;
 
-import com.adondevamos.adondevamos.Dto.UserDTO;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
